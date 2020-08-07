@@ -4,6 +4,7 @@
 
 - [x] 内置类型`builtin`
 - [x] 错误类型`errors`
+- [ ] 公共变量`expvar`
 - [ ] 缓冲区`bufio`
 - [ ] 字节`bytes`
 - [ ] 上下文`context`
@@ -13,7 +14,7 @@
 - [ ] 日志`log`
 - [ ] 路径`path`
 - [ ] 排序`sort`
-- [ ] 字符串
+- [ ] 字符串`strings`
 - [ ] 字符串转换`strconv`
 - [ ] 文本处理`text`
 - [ ] 同步`sync`
@@ -22,11 +23,11 @@
 - [ ] 超文本`html`
 - [ ] 哈希`hash`
 - [ ] 命令行`flag`
-- [ ] 公共变量`expvar`
 
 ## 基础进阶
 
 - [ ] 不安全库`unsafe`
+- [ ] HTTP实现`net/http`
 - [ ] 数据库`database`
 - [ ] `unicode`
 - [ ] 正则匹配`regexp`

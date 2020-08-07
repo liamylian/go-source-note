@@ -1,6 +1,6 @@
 # errors
 
-## 源码分析
+## 依赖接口
 
 - `builtin.error`
 
@@ -11,6 +11,8 @@ type error interface {
 	Error() string
 }
 ```
+
+## 函数
 
 - `New()`
 
