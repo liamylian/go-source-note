@@ -6,12 +6,13 @@
 - [x] 错误类型[`errors`](errors)
 - [x] 公共变量[`expvar`](expvar)
 - [x] 上下文[`context`](context)
+- [x] 日志[`log`](log)
+    * [ ] syslog
 - [ ] 缓冲区`bufio`
 - [ ] 字节`bytes`
 - [ ] 容器`container`
 - [ ] 格式化输出`fmt`
 - [ ] 输入输出`io`
-- [ ] 日志`log`
 - [ ] 路径`path`
 - [ ] 排序`sort`
 - [ ] 字符串`strings`
