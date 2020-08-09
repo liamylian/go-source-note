@@ -1,13 +1,13 @@
-# go-sdk-note
+# Go源码笔记
 
 ## 基础包
 
-- [x] 内置类型`builtin`
-- [x] 错误类型`errors`
-- [ ] 公共变量`expvar`
+- [x] 内置类型[`builtin`](builtin)
+- [x] 错误类型[`errors`](errors)
+- [x] 公共变量[`expvar`](expvar)
+- [x] 上下文[`context`](context)
 - [ ] 缓冲区`bufio`
 - [ ] 字节`bytes`
-- [ ] 上下文`context`
 - [ ] 容器`container`
 - [ ] 格式化输出`fmt`
 - [ ] 输入输出`io`
@@ -18,6 +18,8 @@
 - [ ] 字符串转换`strconv`
 - [ ] 文本处理`text`
 - [ ] 同步`sync`
+    * [ ] `atomic`
+    * [ ] `map`
 - [ ] 测试`testing`
 - [ ] 时间`time`
 - [ ] 超文本`html`

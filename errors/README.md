@@ -1,6 +1,6 @@
-# errors
+# 错误处理
 
-## 依赖接口
+## 依赖类型
 
 - `builtin.error`
 
