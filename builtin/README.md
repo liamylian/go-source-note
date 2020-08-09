@@ -120,6 +120,6 @@
 
 ```go
 type error interface {
-	Error() string
+    Error() string
 }
 ```

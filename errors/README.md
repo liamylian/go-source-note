@@ -8,7 +8,7 @@
 
 ```go
 type error interface {
-	Error() string
+    Error() string
 }
 ```
 
@@ -20,11 +20,11 @@ type error interface {
 
 ```go
 type errorString struct {
-	s string
+    s string
 }
 
 func (e *errorString) Error() string {
-	return e.s
+    return e.s
 }
 ```
 

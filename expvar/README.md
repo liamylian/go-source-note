@@ -6,8 +6,8 @@
 
 ```go
 type Var interface {
-	// 必须返回JSON类型数值
-	String() string
+    // 必须返回JSON类型数值
+    String() string
 }
 ```
 
@@ -102,24 +102,24 @@ type Var interface {
 
 ```go
 type Float struct {
-	f uint64
+    f uint64
 }
 
 func (v *Float) Add(delta float64) {
-	for {
+    for {
         // 加载当前整数值
-		cur := atomic.LoadUint64(&v.f)
+        cur := atomic.LoadUint64(&v.f)
         // 将当前数值转化为浮点类型
-		curVal := math.Float64frombits(cur)
+        curVal := math.Float64frombits(cur)
         // 对浮点数进行加减
-		nxtVal := curVal + delta
+        nxtVal := curVal + delta
         // 将计算结果从新转化为整数值
-		nxt := math.Float64bits(nxtVal)
+        nxt := math.Float64bits(nxtVal)
         // 使用`CPU`原子指令`比较并交换`进行赋值，如果失败重试，直到成功
-		if atomic.CompareAndSwapUint64(&v.f, cur, nxt) {
-			return
-		}
-	}
+        if atomic.CompareAndSwapUint64(&v.f, cur, nxt) {
+            return
+        }
+    }
 }
 ```
 
@@ -129,25 +129,25 @@ func (v *Float) Add(delta float64) {
 
 ```go
 type Map struct {
-	m      sync.Map // map[string]Var
-	keysMu sync.RWMutex // 键名数组锁
-	keys   []string // 排序的健名
+    m      sync.Map // map[string]Var
+    keysMu sync.RWMutex // 键名数组锁
+    keys   []string // 排序的健名
 }
 
 // 添加健名，并重新排序健名数组
 func (v *Map) addKey(key string) {
     // 加琐
-	v.keysMu.Lock()
-	defer v.keysMu.Unlock()
+    v.keysMu.Lock()
+    defer v.keysMu.Unlock()
 
     // 查找并插入健名
-	if i := sort.SearchStrings(v.keys, key); i >= len(v.keys) {
-		v.keys = append(v.keys, key)
-	} else if v.keys[i] != key {
-		v.keys = append(v.keys, "")
-		copy(v.keys[i+1:], v.keys[i:])
-		v.keys[i] = key
-	}
+    if i := sort.SearchStrings(v.keys, key); i >= len(v.keys) {
+        v.keys = append(v.keys, key)
+    } else if v.keys[i] != key {
+        v.keys = append(v.keys, "")
+        copy(v.keys[i+1:], v.keys[i:])
+        v.keys[i] = key
+    }
 }
 
 func (v *Map) Set(key string, av Var) {
@@ -155,16 +155,16 @@ func (v *Map) Set(key string, av Var) {
     // LoadOrStore causes the key interface to escape even on the Load path.（TODO: 翻译）
 
     // 先检查元素否已经存在
-	if _, ok := v.m.Load(key); !ok {
+    if _, ok := v.m.Load(key); !ok {
         // 尝试存储元素，如果失败则说明元素已存在
-		if _, dup := v.m.LoadOrStore(key, av); !dup {
+        if _, dup := v.m.LoadOrStore(key, av); !dup {
             // 元素不存在才添加健名
-			v.addKey(key)
-			return
-		}
-	}
+            v.addKey(key)
+            return
+        }
+    }
 
-	// 保存元素
-	v.m.Store(key, av)
+    // 保存元素
+    v.m.Store(key, av)
 }
 ```
