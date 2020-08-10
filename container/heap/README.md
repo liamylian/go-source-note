@@ -18,12 +18,12 @@
 ```go
 // 可排序类型
 type Interface interface {
-	// 元素个数
-	Len() int
-	// `元素i`是否应该排在`元素j`之前
-	Less(i, j int) bool
-	// 交换`元素i`及`元素j`的位置
-	Swap(i, j int)
+    // 元素个数
+    Len() int
+    // `元素i`是否应该排在`元素j`之前
+    Less(i, j int) bool
+    // 交换`元素i`及`元素j`的位置
+    Swap(i, j int)
 }
 ```
 ## 类型
@@ -31,9 +31,9 @@ type Interface interface {
 ```go
 // 堆类型（最小堆）
 type Interface interface {
-	sort.Interface
-	Push(x interface{}) // 往尾部添加元素
-	Pop() interface{}   // 移除尾部元素，并返回
+    sort.Interface
+    Push(x interface{}) // 往尾部添加元素
+    Pop() interface{}   // 移除尾部元素，并返回
 }
 ```
 
@@ -64,86 +64,86 @@ type Interface interface {
 ```go
 
 func Init(h Interface) {
-	n := h.Len()
-	// 从最底层的非叶子节点开始，将该节点进行下沉。
-	for i := n/2 - 1; i >= 0; i-- {
-		down(h, i, n)
-	}
+    n := h.Len()
+    // 从最底层的非叶子节点开始，将该节点进行下沉。
+    for i := n/2 - 1; i >= 0; i-- {
+        down(h, i, n)
+    }
 }
 
 // 将`元素i0`下沉到该元素对应子树的合适位置，如果下沉了返回`true`。
 // 执行完后保证`i0`及其子节点已满足最小堆。
 func down(h Interface, i0, n int) bool {
-	i := i0
-	for {
-		j1 := 2*i + 1
-		if j1 >= n || j1 < 0 { // 当int溢出时`j1`会小于0
-			break
-		}
-		
-		// 找出最小子节点j
-		j := j1 
-		if j2 := j1 + 1; j2 < n && h.Less(j2, j1) {
-			j = j2 
-		}
-		
-		if !h.Less(j, i) {
-			// 因为Init时，是从最末尾的子树开始的。
-			// 所以，如果节点已经小于它的两个子节，那么该树已经满足最小堆，可以直接退出
-			break 
-		}
-		h.Swap(i, j) // 将最小子节点，与父节点进行替换
-		i = j // 继续从替换后的位置开始，将`i0`进行下沉
-	}
-	return i > i0
+    i := i0
+    for {
+        j1 := 2*i + 1
+        if j1 >= n || j1 < 0 { // 当int溢出时`j1`会小于0
+            break
+        }
+        
+        // 找出最小子节点j
+        j := j1 
+        if j2 := j1 + 1; j2 < n && h.Less(j2, j1) {
+            j = j2 
+        }
+        
+        if !h.Less(j, i) {
+            // 因为Init时，是从最末尾的子树开始的。
+            // 所以，如果节点已经小于它的两个子节，那么该树已经满足最小堆，可以直接退出
+            break 
+        }
+        h.Swap(i, j) // 将最小子节点，与父节点进行替换
+        i = j // 继续从替换后的位置开始，将`i0`进行下沉
+    }
+    return i > i0
 }
 
 // 将元素放入最小堆
 func Push(h Interface, x interface{}) {
-	h.Push(x) // 往底部放入元素
-	up(h, h.Len()-1) // 将底部的元素上浮到合适位置
+    h.Push(x) // 往底部放入元素
+    up(h, h.Len()-1) // 将底部的元素上浮到合适位置
 }
 
 func up(h Interface, j int) {
-	for {
-		i := (j - 1) / 2 // 父节点
-		if i == j || !h.Less(j, i) {
-			// 如果大于父节点，不再上浮，退出
-			break
-		}
-		
-		h.Swap(i, j) // 与父节点进行替换
-		j = i // 继续上浮
-	}
+    for {
+        i := (j - 1) / 2 // 父节点
+        if i == j || !h.Less(j, i) {
+            // 如果大于父节点，不再上浮，退出
+            break
+        }
+        
+        h.Swap(i, j) // 与父节点进行替换
+        j = i // 继续上浮
+    }
 }
 
 // 移除最小元素并返回
 func Pop(h Interface) interface{} {
-	n := h.Len() - 1
-	h.Swap(0, n)
-	down(h, 0, n)
-	return h.Pop()
+    n := h.Len() - 1
+    h.Swap(0, n)
+    down(h, 0, n)
+    return h.Pop()
 }
 
 // 移除第`i`小的元素，并返回
 func Remove(h Interface, i int) interface{} {
-	n := h.Len() - 1
-	if n != i { 
-		h.Swap(i, n) // 将第`i`个元素与底部元素互换
-		if !down(h, i, n) { // 将替换后的第`i`个元素进行下沉
-		    // 如果替换后的第`i`个元素下沉失败，那么进行上浮
-			up(h, i)
-		}
-	}
-	return h.Pop() // 移除底部元素并返回
+    n := h.Len() - 1
+    if n != i { 
+        h.Swap(i, n) // 将第`i`个元素与底部元素互换
+        if !down(h, i, n) { // 将替换后的第`i`个元素进行下沉
+            // 如果替换后的第`i`个元素下沉失败，那么进行上浮
+            up(h, i)
+        }
+    }
+    return h.Pop() // 移除底部元素并返回
 }
 
 // 当弟`i`个元素的值发生改变时，使用该方法进行修复。
 func Fix(h Interface, i int) {
-	// 将第`i`个元素进行下沉 
-	// 如果下沉失败，那么进行上浮
-	if !down(h, i, h.Len()) {
-		up(h, i)
-	}
+    // 将第`i`个元素进行下沉 
+    // 如果下沉失败，那么进行上浮
+    if !down(h, i, h.Len()) {
+        up(h, i)
+    }
 }
 ```

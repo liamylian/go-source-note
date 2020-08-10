@@ -7,7 +7,7 @@
 - [x] 公共变量[`expvar`](expvar)
 - [x] 上下文[`context`](context)
 - [x] 日志[`log`](log)
-    * [x] 系统日志[syslog](log/syslog)
+    * [x] 系统日志[`syslog`](log/syslog)
 - [x] 容器`container`
     * [x] 最小堆[`heap`](container/heap)
     * [ ] `list`
