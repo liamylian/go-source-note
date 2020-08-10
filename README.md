@@ -8,24 +8,32 @@
 - [x] 上下文[`context`](context)
 - [x] 日志[`log`](log)
     * [x] 系统日志[syslog](log/syslog)
-- [ ] 缓冲区`bufio`
-- [ ] 字节`bytes`
-- [ ] 容器`container`
-- [ ] 格式化输出`fmt`
-- [ ] 输入输出`io`
+- [x] 容器`container`
+    * [x] 最小堆[`heap`](container/heap)
+    * [ ] `list`
+    * [ ] `ring`
+- [ ] 命令行`flag`
 - [ ] 路径`path`
+    * [ ] `filepath`
 - [ ] 排序`sort`
-- [ ] 字符串`strings`
-- [ ] 字符串转换`strconv`
-- [ ] 文本处理`text`
+- [ ] 输入输出`io`
+    * [ ] `ioutil`
+- [ ] 字节`bytes`
+- [ ] 缓冲区`bufio`
 - [ ] 同步`sync`
     * [ ] `atomic`
     * [ ] `map`
-- [ ] 测试`testing`
 - [ ] 时间`time`
+- [ ] 格式化输出`fmt`
+- [ ] 字符串`strings`
+- [ ] 字符串转换`strconv`
+- [ ] 文本处理`text`
+    * [ ] `scanner`
+    * [ ] `tabwriter`
+    * [ ] `template`
 - [ ] 超文本`html`
 - [ ] 哈希`hash`
-- [ ] 命令行`flag`
+- [ ] 测试`testing`
 
 ## 基础进阶
 
