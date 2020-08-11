@@ -94,7 +94,7 @@ type Var interface {
 
 返回`HTTP`处理函数。
 
-## 详解
+## 源码解读
 
 ### `float64`类型原子加减
 

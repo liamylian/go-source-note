@@ -59,7 +59,7 @@ type Interface interface {
 
 元素修改值后，修复堆。比删除再添加元素效率高。
 
-## 详解
+## 源码解读
 
 ```go
 

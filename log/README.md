@@ -99,7 +99,7 @@ var std = New(os.Stderr, "", LstdFlags)
 
 输出日志，并且如果设置了`Lshortfile`或`Llongfile`，同时输出执行位置。
 
-## 详解
+## 源码解读
 
 ```go
 type Logger struct {

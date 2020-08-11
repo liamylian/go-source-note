@@ -90,7 +90,7 @@ type List struct {
 
 将其他链表`other`插入到链表之前。
 
-## 详解
+## 源码解读
 
 ```go
 func (l *List) Init() *List {
