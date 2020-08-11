@@ -10,7 +10,7 @@
     * [x] 系统日志[`syslog`](log/syslog)
 - [x] 容器`container`
     * [x] 最小堆[`heap`](container/heap)
-    * [ ] `list`
+    * [x] 双向链表[`list`](container/list)
     * [ ] `ring`
 - [ ] 命令行`flag`
 - [ ] 路径`path`
