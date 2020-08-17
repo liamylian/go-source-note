@@ -13,8 +13,8 @@
     * [x] 双向链表[`list`](container/list)
     * [x] 环形链表[`ring`](container/ring)
 - [x] 命令行[`flag`](flag)
-- [ ] 路径`path`
-    * [ ] `filepath`
+- [x] 路径`path`
+    * [x] `filepath`
 - [ ] 排序`sort`
 - [ ] 输入输出`io`
     * [ ] `ioutil`
