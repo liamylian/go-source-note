@@ -15,11 +15,11 @@
 - [x] 命令行[`flag`](flag)
 - [x] 路径`path`
     * [x] `filepath`
-- [ ] 排序`sort`
+- [ ] 字节`bytes`
 - [ ] 输入输出`io`
     * [ ] `ioutil`
-- [ ] 字节`bytes`
 - [ ] 缓冲区`bufio`
+- [ ] 排序`sort`
 - [ ] 同步`sync`
     * [ ] `atomic`
     * [ ] `map`
