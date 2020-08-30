@@ -13,9 +13,9 @@
     * [x] 双向链表[`list`](container/list)
     * [x] 环形链表[`ring`](container/ring)
 - [x] 命令行[`flag`](flag)
-- [x] 路径`path`
+- [x] 路径[`path`](path)
     * [x] `filepath`
-- [ ] 字节`bytes`
+- [x] 字节[`bytes`](bytes)
 - [ ] 输入输出`io`
     * [ ] `ioutil`
 - [ ] 缓冲区`bufio`

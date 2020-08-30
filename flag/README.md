@@ -178,7 +178,7 @@ type Flag struct {
 ## 源码解析
 
 ```go
-// 判断字符串值是否未选项的空值
+// 判断字符串值是否为选项的空值
 func isZeroValue(flag *Flag, value string) bool {
     // 创建选项空值，转化为字符串，并与`value`进行比较
     typ := reflect.TypeOf(flag.Value)

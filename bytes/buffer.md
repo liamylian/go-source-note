@@ -7,12 +7,12 @@
 type readOp int8
 
 const (
-	opRead      readOp = -1 // 其他读操作
-	opInvalid   readOp = 0  // 非读操作
-	opReadRune1 readOp = 1  // 读1字节的`rune`
-	opReadRune2 readOp = 2  // 读2节的`rune`
-	opReadRune3 readOp = 3  // 读3字节的`rune`
-	opReadRune4 readOp = 4  // 读3字节的`rune`
+    opRead      readOp = -1 // 其他读操作
+    opInvalid   readOp = 0  // 非读操作
+    opReadRune1 readOp = 1  // 读1字节的`rune`
+    opReadRune2 readOp = 2  // 读2节的`rune`
+    opReadRune3 readOp = 3  // 读3字节的`rune`
+    opReadRune4 readOp = 4  // 读3字节的`rune`
 )
 ```
 
@@ -20,9 +20,9 @@ const (
 
 ```go
 type Buffer struct {
-	buf      []byte // 数据为buf[off : len(buf)]
-	off      int    // 从&buf[off]开始读，从&buff[len(buf)]开始写
-	lastRead readOp // 最后一次读操作，这样下一次`Unread`才能实现.
+    buf      []byte // 数据为buf[off : len(buf)]
+    off      int    // 从&buf[off]开始读，从&buff[len(buf)]开始写
+    lastRead readOp // 最后一次读操作，这样下一次`Unread`才能实现.
 }
 ```
 
@@ -120,58 +120,58 @@ type Buffer struct {
 ```go
 // 切片还有容量，通过重新切片扩容。
 func (b *Buffer) tryGrowByReslice(n int) (int, bool) {
-	if l := len(b.buf); n <= cap(b.buf)-l {
-		b.buf = b.buf[:l+n]
-		return l, true
-	}
-	return 0, false
+    if l := len(b.buf); n <= cap(b.buf)-l {
+        b.buf = b.buf[:l+n]
+        return l, true
+    }
+    return 0, false
 }
 
 // 增加缓冲区容量，使之至少保证能继续写入`n`字节。返回下一次用于写入的下标。
 func (b *Buffer) grow(n int) int {
-	m := b.Len()
-	// 没有空间，先重置
-	if m == 0 && b.off != 0 {
-		b.Reset()
-	}
-	
-	// 尝试使用重新切片扩容
-	if i, ok := b.tryGrowByReslice(n); ok {
-		return i
-	}
-	
-	// 缓冲区为空，并且n的大小小于小缓冲区大小，创建小缓冲区
-	if b.buf == nil && n <= smallBufferSize {
-		b.buf = make([]byte, n, smallBufferSize)
-		return 0
-	}
-	
-	c := cap(b.buf)
-	if n <= c/2-m { // (n + m) == c/2; n + m <= 2*c +n; c/2 <= 2c +n
-		// 如果 扩容字节数+切片长度 < 切片容量/2，不需要扩容。移动一下即可。
-		copy(b.buf, b.buf[b.off:])
-	} else if c > maxInt-c-n {
-		// 无法扩容到2*c+n
-		panic(ErrTooLarge)
-	} else {
-		// 容量不足，必须重新创建切片。并且新切片容量为旧切片容量的2倍加需扩容字符数。
-		buf := makeSlice(2*c + n)
-		copy(buf, b.buf[b.off:])
-		b.buf = buf
-	}
-	
-	// 重置缓冲区
-	b.off = 0
-	b.buf = b.buf[:m+n]
-	return m
+    m := b.Len()
+    // 没有空间，先重置
+    if m == 0 && b.off != 0 {
+        b.Reset()
+    }
+    
+    // 尝试使用重新切片扩容
+    if i, ok := b.tryGrowByReslice(n); ok {
+        return i
+    }
+    
+    // 缓冲区为空，并且n的大小小于小缓冲区大小，创建小缓冲区
+    if b.buf == nil && n <= smallBufferSize {
+        b.buf = make([]byte, n, smallBufferSize)
+        return 0
+    }
+    
+    c := cap(b.buf)
+    if n <= c/2-m { // (n + m) == c/2; n + m <= 2*c +n; c/2 <= 2c +n
+        // 如果 扩容字节数+切片长度 < 切片容量/2，不需要扩容。移动一下即可。
+        copy(b.buf, b.buf[b.off:])
+    } else if c > maxInt-c-n {
+        // 无法扩容到2*c+n
+        panic(ErrTooLarge)
+    } else {
+        // 容量不足，必须重新创建切片。并且新切片容量为旧切片容量的2倍加需扩容字符数。
+        buf := makeSlice(2*c + n)
+        copy(buf, b.buf[b.off:])
+        b.buf = buf
+    }
+    
+    // 重置缓冲区
+    b.off = 0
+    b.buf = b.buf[:m+n]
+    return m
 }
 
 // 增加缓冲区容量，使之至少保证能继续写入`n`字节。
 func (b *Buffer) Grow(n int) {
-	if n < 0 {
-		panic("bytes.Buffer.Grow: negative count")
-	}
-	m := b.grow(n)
-	b.buf = b.buf[:m]
+    if n < 0 {
+        panic("bytes.Buffer.Grow: negative count")
+    }
+    m := b.grow(n)
+    b.buf = b.buf[:m]
 }
 ```

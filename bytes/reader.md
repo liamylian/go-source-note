@@ -5,9 +5,9 @@
 ```go
 // 实现了io.Reader, io.ReaderAt, io.WriterTo, io.Seeker, io.ByteScanner, and io.RuneScanner
 type Reader struct {
-	s        []byte
-	i        int64 // 当前正在读下标
-	prevRune int   // 前一个rune字符
+    s        []byte
+    i        int64 // 当前正在读下标
+    prevRune int   // 前一个rune字符
 }
 ```
 ## 函数
@@ -63,19 +63,19 @@ type Reader struct {
 ```go
 // 读取一个rune字符
 func (r *Reader) ReadRune() (ch rune, size int, err error) {
-	if r.i >= int64(len(r.s)) {
-		r.prevRune = -1
-		return 0, 0, io.EOF
-	}
-	r.prevRune = int(r.i)
-	if c := r.s[r.i]; c < utf8.RuneSelf {
-		// 如果字符小于`utf8.RuneSelf，即为单字符`utf-8`字符。直接返回即可
-		r.i++
-		return rune(c), 1, nil
-	}
-	// 需要使用解析器解析出一个rune字符
-	ch, size = utf8.DecodeRune(r.s[r.i:])
-	r.i += int64(size)
-	return
+    if r.i >= int64(len(r.s)) {
+        r.prevRune = -1
+        return 0, 0, io.EOF
+    }
+    r.prevRune = int(r.i)
+    if c := r.s[r.i]; c < utf8.RuneSelf {
+        // 如果字符小于`utf8.RuneSelf，即为单字符`utf-8`字符。直接返回即可
+        r.i++
+        return rune(c), 1, nil
+    }
+    // 需要使用解析器解析出一个rune字符
+    ch, size = utf8.DecodeRune(r.s[r.i:])
+    r.i += int64(size)
+    return
 }
 ```
