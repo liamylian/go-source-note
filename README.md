@@ -16,8 +16,8 @@
 - [x] 路径[`path`](path)
     * [x] `filepath`
 - [x] 字节[`bytes`](bytes)
-- [ ] 输入输出`io`
-    * [ ] `ioutil`
+- [x] 输入输出[`io`](io)
+    * [x] IO工具[`ioutil`](io/ioutil)
 - [ ] 缓冲区`bufio`
 - [ ] 排序`sort`
 - [ ] 同步`sync`
