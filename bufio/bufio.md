@@ -74,45 +74,91 @@ Peek会导致，下次`UnreadByte`和`UnreadRune`调用失败。
 
 - `Read(p []byte) (n int, err error)`
 
+读取字节。
+
 - `ReadByte() (byte, error)`
+
+读取一个字节。
 
 - `UnreadByte() error`
 
+放回读取的一个字节。
+
 - `ReadRune() (r rune, size int, err error)`
+
+读取一个UTF-8字符
 
 - `UnreadRune() erro`
 
+放回读取的一个UTF-8字符
+
 - `Buffered() int`
+
+缓冲的字节数。
 
 - `ReadSlice(delim byte) (line []byte, err error)`
 
+读取字节串直到分隔符。如果没有读取到分隔符，会返回错误（通常为io.EOF）
+如果缓冲区内没有分隔符，返回ErrBufferFull。
+返回的切片，在下次读取后将实效，建议使用ReadBytes和ReadString。
+
 - `ReadLine() (line []byte, isPrefix bool, err error)`
+
+读取一行数据，并且不包括换行符，如果行过长会截断，并且isPrefix为`true`。
+返回的切片，在下次读取后将实效，建议使用ReadBytes('\n')和ReadString('\n')。
 
 - `ReadBytes(delim byte) ([]byte, error)`
 
+读取字节串直到分隔符。如果没有读取到分隔符，会返回错误（通常为io.EOF）
+如果缓冲区内没有分隔符，返回ErrBufferFull。
+
 - `ReadString(delim byte) (string, error)`
+
+读取字符串直到分隔符。如果没有读取到分隔符，会返回错误（通常为io.EOF）
+如果缓冲区内没有分隔符，返回ErrBufferFull。
 
 - `WriteTo(w io.Writer) (n int64, err error)`
 
+读取所有数据，并写入到w。
 
 ## `Writer`方法
 
 - `Size() int`
 
-- `Reset(w io.Writer)`
+返回缓冲区大小。
+
+- `Reset(r io.Writer)`
+
+重置缓冲区。
 
 - `Flush() error`
 
+将缓冲区的是哦有数据写出。
+
 - `Available() int`
+
+剩余缓冲区大小。
 
 - `Buffered() int`
 
+缓冲数据量。
+
 - `Write(p []byte) (nn int, err error)`
+
+将数据写入缓冲区，如果写入数据不足len(p)，会返回错误。
 
 - `WriteByte(c byte) error`
 
+写入一个字符。
+
 - `WriteRune(r rune) (size int, err error)`
+
+写入一个UTF-8字符。
 
 - `WriteString(s string) (int, error)`
 
+写入字符串。
+
 - `ReadFrom(r io.Reader) (n int64, err error)`
+
+从读取器读取数据，并写入缓冲区。
