@@ -18,8 +18,8 @@
 - [x] 字节[`bytes`](bytes)
 - [x] 输入输出[`io`](io)
     * [x] IO工具[`ioutil`](io/ioutil)
-- [ ] 缓冲区`bufio`
-- [ ] 排序`sort`
+- [x] 缓冲区[`bufio`](bufio)
+- [x] 排序[`sort`](sort)
 - [ ] 同步`sync`
     * [ ] `atomic`
     * [ ] `map`
