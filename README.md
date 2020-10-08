@@ -14,15 +14,14 @@
     * [x] 环形链表[`ring`](container/ring)
 - [x] 命令行[`flag`](flag)
 - [x] 路径[`path`](path)
-    * [x] `filepath`
+    * [x] [`*filepath`](path/filepath)
 - [x] 字节[`bytes`](bytes)
 - [x] 输入输出[`io`](io)
     * [x] IO工具[`ioutil`](io/ioutil)
 - [x] 缓冲区[`bufio`](bufio)
-- [x] 排序[`sort`](sort)
+- [x] 排序[`*sort`](sort)
 - [ ] 同步`sync`
-    * [ ] `atomic`
-    * [ ] `map`
+    * [x] [`atomic`](sync/atomic)
 - [ ] 时间`time`
 - [ ] 格式化输出`fmt`
 - [ ] 字符串`strings`
