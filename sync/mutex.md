@@ -28,8 +28,8 @@ type Locker interface {
 
 // 使用后不能复制
 type Mutex struct {
-	state int32
-	sema  uint32
+	state int32 // 状态标识，第一位标识是否锁住，第2位标识是否被唤醒，第三位是否饥饿，第4~32位标识等待mutex上的协程数量。
+	sema  uint32 // 信号量
 }
 ```
 
@@ -65,9 +65,9 @@ func (m *Mutex) lockSlow() {
 	iter := 0
 	old := m.state
 	for {
-        // 饥饿模式不自旋，也无法获得锁。唤醒模式也不自旋
+        // 饥饿模式不自旋，也无法获得锁。
 		if old&(mutexLocked|mutexStarving) == mutexLocked && runtime_canSpin(iter) {
-            // 尝试设置锁状态为唤醒，但不唤醒其他协程
+            // 如果没有唤醒的协程，当前协程未唤醒，而且有等待的协程，尝试设置锁状态为唤醒
 			if !awoke && old&mutexWoken == 0 && old>>mutexWaiterShift != 0 &&
 				atomic.CompareAndSwapInt32(&m.state, old, old|mutexWoken) {
 				awoke = true
@@ -79,53 +79,49 @@ func (m *Mutex) lockSlow() {
 			continue
 		}
 		new := old
-        // 饥饿状态的锁，不要尝试获取锁，新的协程必须进入队列
 		if old&mutexStarving == 0 {
+            // 不是饥饿模式，标识上锁
 			new |= mutexLocked
 		}
 		if old&(mutexLocked|mutexStarving) != 0 {
+            // 增加等待协程数
 			new += 1 << mutexWaiterShift
 		}
-        // 当前协程将锁切换到饥饿模式。
-        // 但如果已经解锁，不用切换，Unlock假设饥饿模式都有等待者。
+
 		if starving && old&mutexLocked != 0 {
+            // 切换到饥饿模式
 			new |= mutexStarving
 		}
 		if awoke {
-			// The goroutine has been woken from sleep,
-			// so we need to reset the flag in either case.
+            // 协程已唤醒，检查状态是否一致
 			if new&mutexWoken == 0 {
 				throw("sync: inconsistent mutex state")
 			}
-			new &^= mutexWoken
+            // 取消唤醒标识
+			new &^= mutexWoken 
 		}
 		if atomic.CompareAndSwapInt32(&m.state, old, new) {
 			if old&(mutexLocked|mutexStarving) == 0 {
-				break // locked the mutex with CAS
+                // 未被锁住，可以返回了
+				break 
 			}
-			// If we were already waiting before, queue at the front of the queue.
+            // 如果等待过，放入后进先出队列
 			queueLifo := waitStartTime != 0
 			if waitStartTime == 0 {
 				waitStartTime = runtime_nanotime()
 			}
 			runtime_SemacquireMutex(&m.sema, queueLifo, 1)
+            // 如果等待时间超过阀值，设置为饥饿模式
 			starving = starving || runtime_nanotime()-waitStartTime > starvationThresholdNs
 			old = m.state
 			if old&mutexStarving != 0 {
-				// If this goroutine was woken and mutex is in starvation mode,
-				// ownership was handed off to us but mutex is in somewhat
-				// inconsistent state: mutexLocked is not set and we are still
-				// accounted as waiter. Fix that.
 				if old&(mutexLocked|mutexWoken) != 0 || old>>mutexWaiterShift == 0 {
+                    // 状态不一致：饥饿模式，且被唤醒或加锁
 					throw("sync: inconsistent mutex state")
 				}
 				delta := int32(mutexLocked - 1<<mutexWaiterShift)
 				if !starving || old>>mutexWaiterShift == 1 {
-					// Exit starvation mode.
-					// Critical to do it here and consider wait time.
-					// Starvation mode is so inefficient, that two goroutines
-					// can go lock-step infinitely once they switch mutex
-					// to starvation mode.
+                    // 退出饥饿模式
 					delta -= mutexStarving
 				}
 				atomic.AddInt32(&m.state, delta)
@@ -161,20 +157,17 @@ func (m *Mutex) unlockSlow(new int32) {
 		throw("sync: unlock of unlocked mutex")
 	}
 	if new&mutexStarving == 0 {
+        // 非饥饿模式
 		old := new
 		for {
-			// If there are no waiters or a goroutine has already
-			// been woken or grabbed the lock, no need to wake anyone.
-			// In starvation mode ownership is directly handed off from unlocking
-			// goroutine to the next waiter. We are not part of this chain,
-			// since we did not observe mutexStarving when we unlocked the mutex above.
-			// So get off the way.
 			if old>>mutexWaiterShift == 0 || old&(mutexLocked|mutexWoken|mutexStarving) != 0 {
+				// 没有等待的协程，或者状态在加锁、唤醒、饥饿模式，返回
 				return
 			}
-			// Grab the right to wake someone.
+            // 设置为唤醒，并且减少等待者
 			new = (old - 1<<mutexWaiterShift) | mutexWoken
 			if atomic.CompareAndSwapInt32(&m.state, old, new) {
+                // 释放信号量
 				runtime_Semrelease(&m.sema, false, 1)
 				return
 			}
@@ -183,7 +176,6 @@ func (m *Mutex) unlockSlow(new int32) {
 	} else {
         // 饥饿模式：
         // 将归属权移交给下一个等待者，使下一个等待者可以立即运行。
-        // 如果mutexStarving被设置，互斥锁任然会被任务是锁住的，新的等待者将不能获得锁。
 		runtime_Semrelease(&m.sema, true, 1)
 	}
 }
