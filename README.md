@@ -1,67 +1,23 @@
 # Go语言学习笔记
 
-## 基础包
+## 环境变量配置
 
-- [x] 内置类型[`builtin`](builtin)
-- [x] 错误类型[`errors`](errors)
-- [x] 公共变量[`expvar`](expvar)
-- [x] 上下文[`context`](context)
-- [x] 日志[`log`](log)
-    * [x] 系统日志[`syslog`](log/syslog)
-- [x] 容器`container`
-    * [x] 最小堆[`heap`](container/heap)
-    * [x] 双向链表[`list`](container/list)
-    * [x] 环形链表[`ring`](container/ring)
-- [x] 命令行[`flag`](flag)
-- [x] 路径[`path`](path)
-    * [x] [`*filepath`](path/filepath)
-- [x] 字节[`bytes`](bytes)
-- [x] 输入输出[`io`](io)
-    * [x] IO工具[`ioutil`](io/ioutil)
-- [x] 缓冲区[`bufio`](bufio)
-- [x] 排序[`*sort`](sort)
-- [ ] 同步`sync`
-    * [x] [`atomic`](sync/atomic)
-- [ ] 时间`time`
-- [ ] 格式化输出`fmt`
-- [ ] 字符串`strings`
-- [ ] 字符串转换`strconv`
-- [ ] 文本处理`text`
-    * [ ] `scanner`
-    * [ ] `tabwriter`
-    * [ ] `template`
-- [ ] 超文本`html`
-- [ ] 哈希`hash`
-- [ ] 测试`testing`
+```
+export PATH=$PATH:/usr/local/go/bin
+```
 
-## 基础进阶
+## 代理配置
 
-- [ ] 不安全库`unsafe`
-- [ ] HTTP实现`net/http`
-- [ ] 数据库`database`
-- [ ] `unicode`
-- [ ] 正则匹配`regexp`
-- [ ] 反射`reflect`
-- [ ] 系统`os`
+```
+export GOPROXY=https://goproxy.cn,direct;
+export GOPRIVATE=git.inspii.com;
+export GONOSUMDB=git.inspii.com;
+export GOSUMDB=sum.golang.google.cn;
+```
 
-## 应用
-
-- [ ] 插件`plugin`
-- [ ] 压缩`compress`
-- [ ] 打包`archive`
-- [ ] 加密`crypto`
-- [ ] 编码`encoding`
-- [ ] 网络`net`
-- [ ] 媒体`mime`
-- [ ] 图片`image`
-- [ ] 数学`math`
-
-## GoLang内部
-
-- [ ] `go`
-- [ ] 内部`internal`
-- [ ] 运行时`runtime`
-- [ ] 命令`cmd`
-- [ ] 调试`debug`
-- [ ] 系统调用`syscall`
-- [ ] index
+```
+go env -w GOPROXY=https://goproxy.cn,direct
+go env -w GOPRIVATE=git.inspii.com
+go env -w GONOSUMDB=git.inspii.com
+go env -w GOSUMDB=sum.golang.google.cn
+```
